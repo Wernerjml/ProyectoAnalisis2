@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda en Línea - Carrito de Compras</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f6f9; }
+        header { background: #343a40; color: white; padding: 15px; text-align: center; border-radius: 5px; }
+        .container { display: flex; gap: 20px; margin-top: 20px; }
+        .card { background: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex: 1; }
+        h2 { border-bottom: 2px solid #007bff; padding-bottom: 5px; color: #333; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 15px; margin-top: 15px; cursor: pointer; border-radius: 4px; width: 100%; }
+        button:hover { background: #0056b3; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .btn-carrito { background: #28a745; width: auto; padding: 5px 10px; }
+        .btn-carrito:hover { background: #218838; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mi Tienda en Línea - Spring Boot</h1>
+    </header>
+
+    <div class="container">
+        <!-- Panel Izquierdo: Formulario para crear productos (CRUD) -->
+        <div class="card">
+            <h2>Agregar Producto</h2>
+            <form id="productoForm">
+                <label for="nombre">Nombre del Producto:</label>
+                <input type="text" id="nombre" required>
+
+                <label for="precio">Precio ($):</label>
+                <input type="number" step="0.01" id="precio" required>
+
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" required>
+
+                <button type="submit">Guardar Producto</button>
+            </form>
+        </div>
+
+        <!-- Panel Derecho: Catálogo de Productos y Carrito -->
+        <div class="card">
+            <h2>Catálogo de Productos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acción</th>
+                    </tr>
+                <thead id="tablaProductos">
+                    <!-- Los productos se cargarán dinámicamente aquí -->
+                </tbody>
+            </table>
+
+            <h2 style="margin-top: 30px;">Carrito de Compras</h2>
+            <div id="carritoResumen">
+                <p>No hay productos en el carrito.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api/productos';
+        let carrito = [];
+
+        // Cargar productos al iniciar la página
+        document.addEventListener('DOMContentLoaded', cargarProductos);
+
+        // Manejar el envío del formulario para crear productos
+        document.getElementById('productoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const producto = {
+                nombre: document.getElementById('nombre').value,
+                precio: parseFloat(document.getElementById('precio').value),
+                stock: parseInt(document.getElementById('stock').value)
+            };
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(producto)
+            });
+
+            if (response.ok) {
+                document.getElementById('productoForm').reset();
+                cargarProductos();
+            } else {
+                alert('Error al guardar el producto');
+            }
+        });
+
+        // Función para obtener y mostrar los productos
+        async function cargarProductos() {
+            const response = await fetch(API_URL);
+            const productos = await response.json();
+            const tbody = document.getElementById('tablaProductos');
+            tbody.innerHTML = '';
+
+            productos.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.nombre}</td>
+                    <td>$${p.precio.toFixed(2)}</td>
+                    <td>${p.stock}</td>
+                    <td><button class="btn-carrito" onclick="agregarAlCarrito('${p.nombre}', ${p.precio})">Comprar</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Función simple para simular el carrito de compras
+        function agregarAlCarrito(nombre, precio) {
+            carrito.push({ nombre, precio });
+            actualizarCarrito();
+        }
+
+        function actualizarCarrito() {
+            const contenedor = document.getElementById('carritoResumen');
+            if (carrito.length === 0) {
+                contenedor.innerHTML = '<p>No hay productos en el carrito.</p>';
+                return;
+            }
+
+            let html = '<ul>';
+            let total = 0;
+            carrito.forEach(item => {
+                html += `<li>${item.nombre} - $${item.precio.toFixed(2)}</li>`;
+                total += item.precio;
+            });
+            html += `</ul><strong>Total a Pagar: $${total.toFixed(2)}</strong>`;
+            contenedor.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

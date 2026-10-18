@@ -1,0 +1,17 @@
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/factory/ReadWritePermission.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/factory/DatabasePermission.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/model/Producto.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/strategy/CreditCardPaymentStrategy.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/strategy/PayPalPaymentStrategy.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/strategy/PaymentContext.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/service/ProductoService.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/factory/ReadOnlyPermission.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/CarritoApplication.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/factory/PermissionFactory.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/repository/ProductoRepository.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/strategy/DebitCardPaymentStrategy.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/strategy/CashPaymentStrategy.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/controller/ProductoController.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/controller/TestController.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/strategy/PaymentStrategy.java
+/home/werner/tienda-linea/src/main/java/com/tienda/carrito/factory/WriteOnlyPermission.java
